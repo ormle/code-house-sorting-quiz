@@ -19,7 +19,6 @@ function App() {
     Styling for completed quiz
     Transitions/Animations?
   */
-  /* bg-[url('./assets/bg1.jpg')] */
   return (
     
     <div className=" py-8 bg-black text-white size-full">
