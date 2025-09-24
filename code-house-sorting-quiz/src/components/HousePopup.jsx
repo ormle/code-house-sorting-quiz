@@ -14,8 +14,8 @@ const InfoStyle = {
 
 //How to minimize this styling?
 const PantherStyle = {
-    width: "240px",
-    height: "240px",
+    width: "200px",
+    height: "200px",
     border: "10px solid #f00000",
     borderRadius: "50%",
     boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
@@ -23,8 +23,8 @@ const PantherStyle = {
 }
 
 const BatStyle = {
-    width: "240px",
-    height: "240px",
+    width: "200px",
+    height: "200px",
     border: "10px solid #4000ff",
     borderRadius: "50%",
     boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
@@ -32,8 +32,8 @@ const BatStyle = {
 }
 
 const LynxStyle = {
-    width: "240px",
-    height: "240px",
+    width: "200px",
+    height: "200px",
     border: "10px solid #ffbf00",
     borderRadius: "50%",
     boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
@@ -41,8 +41,8 @@ const LynxStyle = {
 }
 
 const SaberStyle = {
-    width: "240px",
-    height: "240px",
+    width: "200px",
+    height: "200px",
     border: "10px solid #29a329",
     borderRadius: "50%",
     boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
@@ -54,7 +54,7 @@ export const HousePopup = ({icon, color, description, alt, name, num}) => {
     const imageStyles = [PantherStyle, BatStyle, LynxStyle, SaberStyle]
 
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 background-red">
             <label className="font-bold text-shadow-lg">{name}</label>
             <Popup 
                 trigger={

@@ -22,7 +22,7 @@ export const Landing = ({handleToggle, show}) => {
                     })}
                 </div>
                 
-                <p className="mt-16">
+                <p className="mt-8">
                     Find out which house you belong to <br></br>
                     by pressing the button below!
                 </p>
