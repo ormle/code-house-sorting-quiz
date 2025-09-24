@@ -1,16 +1,12 @@
 import React, {useCallback, useState} from 'react';
 import { Landing } from './components/Landing.jsx'
 import { Quiz }  from './components/Quiz.jsx'
-//import { QuizResult } from './components/QuizResult.jsx';
-//https://unsplash.com/photos/background-pattern-6NjUwCfRddM
 
 
 function App() {
   const [show, setShow] = useState(false); 
-  //const [finish, setFinish] = useState(false)
 
   const handleToggle = useCallback(() => setShow(prevShow => !prevShow),[])
-  //const handleFinish = useCallback(() => setFinish(prevFinish => !prevFinish), [])
 
   //TODO
   /*House descriptions
