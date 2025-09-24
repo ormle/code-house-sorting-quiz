@@ -52,7 +52,7 @@ export const useCredentials = (identityPoolId, region, apiGatewayUrl) => {
         }
     }
 
-    const updateData = async (identityPoolId, data) => {
+    const updateData = async (id, data) => {
         try {
             setLoading(true);
             setError(null);
