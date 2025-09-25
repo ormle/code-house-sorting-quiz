@@ -60,8 +60,8 @@ class CredentialManager {
         this.apiGatewayUrl = url;
     }
 
-    //Make POST req to API Gateway
-    async makeApiPostRequest(endpoint, method = 'POST', data = null){
+    //Make req to API Gateway
+    async makeApiRequest(endpoint, method = 'POST', data = null){
         if (!this.apiGatewayUrl){
             throw new Error('API Gateway URL not set. Call setApiGatewayUrl() first.');
         }
@@ -113,7 +113,12 @@ class CredentialManager {
         }
     }
 
-    //Get for later??
+    //POST req
+    async saveData(data){
+        return await this.makeApiRequest('/save-data', 'POST', data);
+    }
+
+    //Get req (Later??)
     async getData(params = {}) {
         const queryString = new URLSearchParams(params).toString();
         const endpoint = `/get-data${queryString ? `?${queryString}` : ''}`;
