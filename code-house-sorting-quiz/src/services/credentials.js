@@ -1,70 +1,52 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import CredentialManager from "./credentialManager";
 
 
 export const useCredentials = (identityPoolId, region, apiGatewayUrl) => {
+    const [manager, setManager] = useState(null);
     const [isReady, setIsReady] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     
     //Create manager instance
-    const manager = useMemo(() => {
-        const mgr = new CredentialManager(identityPoolId, region);
-        if (apiGatewayUrl){
-            mgr.setApiGatewayUrl(apiGatewayUrl);
-        }
-        return mgr;
-    }, [identityPoolId, region, apiGatewayUrl]);
-
-    //Initialize credentials
     useEffect(() => {
-        const initialize = async () => {
-            try{
-                setLoading(true);
-                //Test credential provider
-                await manager.getCredentialProvider()();
-                setIsReady(true);
-                setError(null);
-            } catch(e){
-                setError(e);
-                console.error('Failed to initialize credentials: ', e);
-            } finally {
-                setLoading(false);
-            }
+        try{
+            const credentialManager = new CredentialManager();
+            setManager(credentialManager);
+            setIsReady(true);
+            setError(null);
+            console.log("Credential manager initialized");
+        }catch(e){
+            console.error("Failed to initialize credential manager", e);
+            setError(e.message);
+            setIsReady(false);
+        }
+    }, [])
+
+    const makeApiCall = useCallback( async (endpoint,method = 'POST', data=null) => {
+        if (!isReady || !manager){
+            throw new Error("Credential manager not ready");
         }
 
-        initialize();
-    }, [manager]);
+        setLoading(true);
+        setError(null);
 
-    //Wrapper fxns w/error handling
-
-    const getData = async(params) => {
-        try {
-            setLoading(true);
-            setError(null);
-            const result = await manager.getData(params);
+        try{
+            const result = await manager.makeApiRequest(endpoint, method, data);
             return result;
         } catch(e){
-            setError(e);
-            throw e;
-        } finally{
-            setLoading(false);
-        }
-    }
-
-    const updateData = async (id, data) => {
-        try {
-            setLoading(true);
-            setError(null);
-            const result = await manager.updateData(id, data);
-            return result;
-        } catch (e){
-            setError(e);
+            setError(e.message);
             throw e;
         } finally {
             setLoading(false);
         }
-    }
+    }, [manager, isReady])
+
+    //Wrapper fxns w/error handling
+
+    const saveData = useCallback( async (data) => {
+        return await makeApiCall('/results', 'POST', data);
+    }, [makeApiCall])
 
     return {
         isReady,
@@ -72,7 +54,6 @@ export const useCredentials = (identityPoolId, region, apiGatewayUrl) => {
         error,
         manager,
         //API methods
-        getData,
-        updateData
+        saveData
     }
 }

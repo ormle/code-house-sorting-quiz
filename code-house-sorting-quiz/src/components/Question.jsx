@@ -1,7 +1,7 @@
 
 
 export const Question = ({data, chooseAnswer, questionIndex}) => {
-    
+
     return (
         <div> 
             <h1 className="text-4xl underline decoration-8"> {data[questionIndex].question}</h1>

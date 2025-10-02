@@ -1,9 +1,29 @@
-import AWS from 'aws-sdk'
+import { CognitoIdentityClient } from "@aws-sdk/client-cognito-identity";
+import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
 
-AWS.config.update({
-    region: process.env.REACT_APP_AWS_REGION,
-    identityPoolId: process.env.HOUSE_APP_POOL_ID,
-    api_url: process.env.REACT_APP_HOUSE_API_URL
+// Validate environment variables
+const requiredEnvVars = [
+  'REACT_APP_AWS_REGION',
+  'REACT_APP_COGNITO_IDENTITY_POOL_ID',
+  'REACT_APP_API_GATEWAY_URL'
+];
+
+const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
+if (missingVars.length > 0) {
+  throw new Error(`Missing required environment variables: ${missingVars.join(', ')}`);
+};
+
+//Create credential provider
+const credentials = fromCognitoIdentityPool({
+    client: new CognitoIdentityClient({ region: process.env.REACT_APP_AWS_REGION }),
+    identityPoolId: process.env.REACT_APP_COGNITO_IDENTITY_POOL_ID
 });
 
-export default AWS;
+const awsConfig = {
+    region: process.env.REACT_APP_AWS_REGION,
+    credentials: credentials,
+    identityPoolId: process.env.REACT_APP_COGNITO_IDENTITY_POOL_ID,
+    apiGatewayUrl: process.env.REACT_APP_API_GATEWAY_URL
+};
+
+export default awsConfig;

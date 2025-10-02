@@ -1,23 +1,15 @@
-import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
+import awsConfig from "../aws-config";
 import { SignatureV4 } from "@aws-sdk/signature-v4"
 import { Sha256 } from "@aws-crypto/sha256-js";
 
 class CredentialManager {
-    constructor(identityPoolId, region){
-        this.identityPoolId = identityPoolId;
-        this.region = region;
-        this.apiGatewayUrl = null;
+    constructor(){
+        //use credentials from config
+        this.credentialProvider = awsConfig.credentials;
+        this.region = awsConfig.region;
+        this.apiGatewayUrl = awsConfig.apiGatewayUrl;
 
-        this.initializeCredentials();
         this.setUpStorage();
-    }
-
-    //Using AWS SDK
-    initializeCredentials(){
-        this.credentialProvider = fromCognitoIdentityPool({
-            identityPoolId: this.identityPoolId,
-            clientConfig: {region: this.region }
-        });
     }
 
     //Store identity in sessionStorage
@@ -25,16 +17,12 @@ class CredentialManager {
         this.credentialProvider().then(creds => {
             //Extract and store identity for session
             if (creds.identityId){
+                //console.log(creds);
                 sessionStorage.setItem('cognito_identity_id', creds.identityId)
             }
         }).catch(err => {
             console.log('Initial credential fetch failed: ', err);
         })
-    }
-
-    //SDK refresh when called
-    async getCredentials(){
-        return await this.credentialProvider();
     }
 
     // Get credentials for AWS service clients
@@ -49,26 +37,18 @@ class CredentialManager {
             accessKeyId: creds.accessKeyId,
             secretAccessKey: creds.secretAccessKey,
             sessionToken: creds.sessionToken,
+            expiration: creds.expiration,
             region: this.region
         }
     }
 
-    /**
-     * Set API Gateway URL
-     */
-    setApiGatewayUrl(url){
-        this.apiGatewayUrl = url;
-    }
-
     //Make req to API Gateway
     async makeApiRequest(endpoint, method = 'POST', data = null){
-        if (!this.apiGatewayUrl){
-            throw new Error('API Gateway URL not set. Call setApiGatewayUrl() first.');
-        }
-
         try{
             const credentials = await this.getSigningCredentials();
             const url = new URL(`${this.apiGatewayUrl}${endpoint}`);
+            //console.log("FUll URL: " + url.toString())
+            //console.log(JSON.stringify(credentials, null, 2))
 
             const request = {
                 method, 
@@ -76,8 +56,8 @@ class CredentialManager {
                 path: url.pathname + url.search,
                 protocol: url.protocol,
                 headers: {
-                    'Content-Type': 'application/json',
-                    'host': url.hostname
+                    'content-type': 'application/json',
+                    'host': url.hostname,
                 }
             }
 
@@ -89,21 +69,33 @@ class CredentialManager {
             const signer = new SignatureV4({
                 credentials,
                 region: this.region,
-                service: 'execure-api',
+                service: 'execute-api',
                 sha256: Sha256
             });
 
             const signedRequest = await signer.sign(request);
 
-            //Make HTTP req
+            console.log("SIGNED: " , JSON.stringify(signedRequest, null, 2))
+
+            // Convert headers to proper case for the actual HTTP request
+            const httpHeaders = {};
+            Object.entries(signedRequest.headers).forEach(([key, value]) => {
+                // Convert to proper case
+                const properKey = key.split('-')
+                    .map(part => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+                    .join('-');
+                httpHeaders[properKey] = value;
+            });
+
+            //Makre HTTP req
             const response = await fetch(url.toString(), {
                 method: signedRequest.method,
-                headers: signedRequest.headers,
-                body: signedRequest.body
+                headers: httpHeaders,
+                body: signedRequest.body,
             })
 
             if (!response.ok){
-                throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+                throw new Error(`API request failed: ${response.status} ${response.statusText} ${[response.headers.entries()]}`);
             }
 
             return await response.json();
@@ -115,13 +107,13 @@ class CredentialManager {
 
     //POST req
     async saveData(data){
-        return await this.makeApiRequest('/save-data', 'POST', data);
+        return await this.makeApiRequest('/results', 'POST', data);
     }
 
     //Get req (Later??)
     async getData(params = {}) {
         const queryString = new URLSearchParams(params).toString();
-        const endpoint = `/get-data${queryString ? `?${queryString}` : ''}`;
+        const endpoint = `/houses${queryString ? `?${queryString}` : ''}`;
         return await this.makeApiRequest(endpoint, 'GET');
   }
 }

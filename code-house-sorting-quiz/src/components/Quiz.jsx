@@ -7,11 +7,12 @@ import { Name } from "./Name"
 
 export const Quiz = ({show, handleToggle}) => {
 
-    const [questionIndex, setQuestionIndex] = useState(0)
-    const [userName, setUserName] = useState("")
-    const [startQuiz, setStartQuiz] = useState(false)
-    const [finishQuiz, setFinishQuiz] = useState(false)
-    const [houseInfo, setHouseInfo] = useState()
+    const [questionIndex, setQuestionIndex] = useState(0);
+    const [userName, setUserName] = useState("");
+    const [lastInitial, setLastInitial] = useState("");
+    const [startQuiz, setStartQuiz] = useState(false);
+    const [finishQuiz, setFinishQuiz] = useState(false);
+    const [houseInfo, setHouseInfo] = useState();
 
     let userAnswers = []
 
@@ -86,12 +87,13 @@ export const Quiz = ({show, handleToggle}) => {
     }
 
     const resetAll = () => {
-        setStartQuiz(false)
-        setUserName("")
-        setFinishQuiz(false)
-        setHouseInfo()
-        setQuestionIndex(0)
-        handleToggle()
+        setStartQuiz(false);
+        setUserName("");
+        setLastInitial("");
+        setFinishQuiz(false);
+        setHouseInfo();
+        setQuestionIndex(0);
+        handleToggle();
     }
 
     return (
@@ -99,11 +101,11 @@ export const Quiz = ({show, handleToggle}) => {
         {show && 
             <div className="flex flex-col">
                 {startQuiz === false ?  (
-                    <Name handleStart={handleStart} setUserName={setUserName} />
+                    <Name handleStart={handleStart} setUserName={setUserName} setLastInitial={setLastInitial}/>
                 ):(
                     <div className="h-full">
                         {finishQuiz ? (
-                            <QuizResult userName={userName} houseInfo={houseInfo} resetAll={resetAll}/>
+                            <QuizResult userName={userName} lastInitial={lastInitial} houseInfo={houseInfo} resetAll={resetAll}/>
                         ):( 
                             <Question data={data} chooseAnswer={chooseAnswer} questionIndex={questionIndex} />
                         )}{/* End finishQuiz */}

@@ -2,8 +2,8 @@ import React, {useCallback, useState} from 'react';
 import { Landing } from './components/Landing.jsx'
 import { Quiz }  from './components/Quiz.jsx'
 
-
 function App() {
+  //What parts of app show
   const [show, setShow] = useState(false); 
 
   const handleToggle = useCallback(() => setShow(prevShow => !prevShow),[])
