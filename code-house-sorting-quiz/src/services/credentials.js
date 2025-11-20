@@ -15,7 +15,7 @@ export const useCredentials = (identityPoolId, region, apiGatewayUrl) => {
             setManager(credentialManager);
             setIsReady(true);
             setError(null);
-            console.log("Credential manager initialized");
+            //console.log("Credential manager initialized");
         }catch(e){
             console.error("Failed to initialize credential manager", e);
             setError(e.message);

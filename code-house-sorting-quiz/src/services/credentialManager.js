@@ -75,8 +75,6 @@ class CredentialManager {
 
             const signedRequest = await signer.sign(request);
 
-            console.log("SIGNED: " , JSON.stringify(signedRequest, null, 2))
-
             // Convert headers to proper case for the actual HTTP request
             const httpHeaders = {};
             Object.entries(signedRequest.headers).forEach(([key, value]) => {
@@ -111,11 +109,11 @@ class CredentialManager {
     }
 
     //Get req (Later??)
-    async getData(params = {}) {
-        const queryString = new URLSearchParams(params).toString();
-        const endpoint = `/houses${queryString ? `?${queryString}` : ''}`;
-        return await this.makeApiRequest(endpoint, 'GET');
-  }
+    // async getData(params = {}) {
+    //     const queryString = new URLSearchParams(params).toString();
+    //     const endpoint = `/houses${queryString ? `?${queryString}` : ''}`;
+    //     return await this.makeApiRequest(endpoint, 'GET');
+    // }
 }
 
 export default CredentialManager;
