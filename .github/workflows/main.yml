@@ -1,0 +1,54 @@
+name: Deploy Static Site
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
+
+      - name: Install Dependencies and Build
+        run: |
+          cd code-house-sorting-quiz
+          npm ci
+          npm run build
+          ls -la dist/  # Verify build output
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ROLE_NAME }}
+          aws-region: us-east-1
+
+      - name: Deploy to S3
+        run: |
+          aws s3 sync code-house-sorting-quiz/build/ s3://${{ secrets.S3_BUCKET_NAME }}/ \
+            --exclude "*.html" \
+            --cache-control "public, max-age=31536000, immutable" \
+            --delete
+
+          aws s3 sync code-house-sorting-quiz/dist/ s3://${{ secrets.S3_BUCKET_NAME }}/ \
+            --exclude "*" --include "*.html" \
+            --cache-control "public, max-age=300" \
+            --delete
+
+      - name: Invalidate CloudFront
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths "/*.html" "/index.html"
