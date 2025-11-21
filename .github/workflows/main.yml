@@ -24,7 +24,7 @@ jobs:
 
       - name: Install Dependencies and Build
         run: |
-          cd website
+          cd code-house-sorting-quiz
           npm ci
           npm run build
           ls -la dist/  # Verify build output
