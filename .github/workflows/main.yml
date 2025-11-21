@@ -27,13 +27,13 @@ jobs:
           cd code-house-sorting-quiz
           npm ci
           npm run build
-          ls -la dist/  # Verify build output
+          ls -la build/  # Verify build output
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ROLE_NAME }}
-          aws-region: us-east-1
+          aws-region: us-west-2
 
       - name: Deploy to S3
         run: |
@@ -42,7 +42,7 @@ jobs:
             --cache-control "public, max-age=31536000, immutable" \
             --delete
 
-          aws s3 sync code-house-sorting-quiz/dist/ s3://${{ secrets.S3_BUCKET_NAME }}/ \
+          aws s3 sync code-house-sorting-quiz/build/ s3://${{ secrets.S3_BUCKET_NAME }}/ \
             --exclude "*" --include "*.html" \
             --cache-control "public, max-age=300" \
             --delete
