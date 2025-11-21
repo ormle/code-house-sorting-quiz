@@ -1,10 +1,9 @@
 
 import { useCredentials } from "../services/credentials"
 import { useEffect} from "react";
-import { Bg } from "./sketch";
 
 export const QuizResult = ( {userName, lastInitial, houseInfo,  resetAll} ) => {
-    const { isReady, manager, error } = useCredentials();
+    const { isReady, manager } = useCredentials();
 
     const dateTaken = new Date().toISOString()
     
