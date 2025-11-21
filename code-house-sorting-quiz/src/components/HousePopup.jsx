@@ -54,9 +54,9 @@ export const HousePopup = ({icon, color, description, alt, name, num}) => {
     const imageStyles = [PantherStyle, BatStyle, LynxStyle, SaberStyle]
 
     return (
-        <div className="flex flex-col gap-4 background-red">
+        <div className="flex flex-col gap-4 ">
             <label className="font-bold text-shadow-lg">{name}</label>
-            <Popup 
+            { /*<Popup 
                 trigger={
                     <button className="rounded-full">
                         <img src={icon} style={imageStyles[num]} alt={alt} />
@@ -68,7 +68,7 @@ export const HousePopup = ({icon, color, description, alt, name, num}) => {
                     <h1 className="text-2xl underline decoration-4 mb-4">{name}</h1>
                     <p>{description}</p>
                 </div>
-            </Popup>
+            </Popup> */ }
         </div>
     )
 }
