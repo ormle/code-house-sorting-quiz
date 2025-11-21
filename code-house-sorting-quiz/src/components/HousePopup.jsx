@@ -1,7 +1,7 @@
-import Popup from "reactjs-popup"
+//import Popup from "reactjs-popup"
 import 'reactjs-popup/dist/index.css'
 
-const CENTER = "center center"
+/*const CENTER = "center center"
 
 const InfoStyle = {
     padding: '20px',
@@ -10,9 +10,9 @@ const InfoStyle = {
     height: "400px",
     backgroundColor: "grey",
     borderRadius: "20px",
-}
+}*/
 
-//How to minimize this styling?
+
 const PantherStyle = {
     width: "200px",
     height: "200px",
@@ -47,7 +47,7 @@ const SaberStyle = {
     borderRadius: "50%",
     boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
     clipPath: "circle(50%)",
-}
+} 
 
 export const HousePopup = ({icon, color, description, alt, name, num}) => {
 
@@ -56,6 +56,7 @@ export const HousePopup = ({icon, color, description, alt, name, num}) => {
     return (
         <div className="flex flex-col gap-4 ">
             <label className="font-bold text-shadow-lg">{name}</label>
+            <img src={icon} style={imageStyles[num]} alt={alt} />
             { /*<Popup 
                 trigger={
                     <button className="rounded-full">
