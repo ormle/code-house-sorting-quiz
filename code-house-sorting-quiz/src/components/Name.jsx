@@ -5,7 +5,10 @@ export const Name = ( {handleStart, setUserName, setLastInitial} ) => {
         <form className="flex flex-col" onSubmit={handleStart}>
             <div className="flex flex-row mx-40">
                 <div className="flex flex-col">
-                    <label className="text-2xl self-start"> Enter your name: </label>
+                    <div className='fit-content self-start px-4 py-4'>
+                        <label className="text-2xl backdrop-blur-sm"> Enter your name: </label>  
+                    </div>
+                    
                     <input 
                         type="text"
                         id="userName"
@@ -18,7 +21,9 @@ export const Name = ( {handleStart, setUserName, setLastInitial} ) => {
                     />
                 </div>
                 <div className="flex flex-col">
-                    <label className="text-2xl self-start ml-8"> Last name<br/> initial: </label>
+                    <div className='fit-content relative self-start px-4 py-4'>
+                        <label className="text-2xl backdrop-blur-sm ml-8"> Last name<br/> initial: </label>
+                    </div>
                     <input
                         type="text"
                         id="lastInitial"
@@ -31,7 +36,7 @@ export const Name = ( {handleStart, setUserName, setLastInitial} ) => {
                     />
                 </div>
             </div>
-            <button className=" mt-16 text-4xl bg-yellow-500 border-8 border-yellow-300 min-w-72 min-h-32 self-center hover:border-yellow-500 hover:bg-yellow-300 hover:text-white" >Next</button>
+            <button className=" mt-16 text-4xl bg-yellow-500 border-8 border-yellow-400 min-w-72 min-h-32 self-center hover:border-yellow-500 hover:bg-yellow-400 hover:text-white" >Next</button>
         </form>
     )
 }

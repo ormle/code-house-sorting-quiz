@@ -1,17 +1,3 @@
-//import Popup from "reactjs-popup"
-import 'reactjs-popup/dist/index.css'
-
-/*const CENTER = "center center"
-
-const InfoStyle = {
-    padding: '20px',
-    textAlign: 'center',
-    width: "600px",
-    height: "400px",
-    backgroundColor: "grey",
-    borderRadius: "20px",
-}*/
-
 
 const PantherStyle = {
     width: "200px",
@@ -49,27 +35,17 @@ const SaberStyle = {
     clipPath: "circle(50%)",
 } 
 
-export const HousePopup = ({icon, color, description, alt, name, num}) => {
+export const HousePopup = ({icon, alt, name, num}) => {
 
     const imageStyles = [PantherStyle, BatStyle, LynxStyle, SaberStyle]
 
     return (
         <div className="flex flex-col gap-4 ">
-            <label className="font-bold text-shadow-lg">{name}</label>
-            <img src={icon} style={imageStyles[num]} alt={alt} />
-            { /*<Popup 
-                trigger={
-                    <button className="rounded-full">
-                        <img src={icon} style={imageStyles[num]} alt={alt} />
-                    </button>} 
-                position={CENTER}
-                contentStyle={InfoStyle}
-            >
-                <div className="flex flex-col text-center ">
-                    <h1 className="text-2xl underline decoration-4 mb-4">{name}</h1>
-                    <p>{description}</p>
-                </div>
-            </Popup> */ }
+            <div className="relative fit-content ">
+                <label className="font-bold text-shadow-lg backdrop-blur-sm">{name}</label>
+            </div>
+            
+            <img src={icon} style={imageStyles[num]} alt={alt} className="backdrop-blur-sm" />
         </div>
     )
 }
