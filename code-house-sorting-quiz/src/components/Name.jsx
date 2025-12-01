@@ -2,7 +2,7 @@
 export const Name = ( {handleStart, setUserName, setLastInitial} ) => {
 
     return (
-        <form className="flex flex-col" onSubmit={handleStart}>
+        <form className="flex flex-col " onSubmit={handleStart}>
             <div className="flex flex-row mx-40">
                 <div className="flex flex-col">
                     <div className='fit-content self-start px-4 py-4'>

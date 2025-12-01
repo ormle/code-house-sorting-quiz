@@ -12,8 +12,8 @@ export const Bg = () => {
 
         const setup = (p5) => {
             canvas = p5.createCanvas(p5.windowWidth, p5.windowHeight);
-            canvas.parent("p5-background");
-            canvas.style('z-index', '-1');
+            canvas.parent("root");
+            canvas.style('z-index', '-10');
             canvas.position(0, 0);
             p5.colorMode(p5.HSB, 360, 100, 100);
             cols = p5.windowWidth / size;
@@ -78,9 +78,18 @@ export const Bg = () => {
             return F;
         }
 
+        window.addEventListener('resize', windowResized);
+        windowResized()
+        window.removeEventListener('resize', windowResized)
+
+        function windowResized(p5) {
+            // p5.resizeCanvas(p5.windowWidth, p5.windowHeight);
+            console.log("hi")
+        }
+
         return (
-            <canvas className="display position-absolute h-0 w-0">
-                <Sketch setup={setup} draw={draw}/>
+            <canvas className="display position-fixed h-0 w-0">
+                <Sketch setup={setup} draw={draw} className="position-fixed"/>
             </canvas>
         )
 }
