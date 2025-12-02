@@ -97,24 +97,24 @@ export const Quiz = ({show, handleToggle}) => {
     }
 
     return (
-        <div>
+        <>
         {show && 
-            <div className="flex flex-col">
+            <>
                 {startQuiz === false ?  (
                     <Name handleStart={handleStart} setUserName={setUserName} setLastInitial={setLastInitial}/>
                 ):(
-                    <div className="h-full">
+                    <>
                         {finishQuiz ? (
                             <QuizResult userName={userName} lastInitial={lastInitial} houseInfo={houseInfo} resetAll={resetAll}/>
                         ):( 
                             <Question data={data} chooseAnswer={chooseAnswer} questionIndex={questionIndex} />
                         )}{/* End finishQuiz */}
-                    </div>
+                    </>
                    
                 )} {/* End startQuiz */}
-            </div>
+            </>
         } {/* End show */}
-        </div>
+        </>
         
     )
 }
