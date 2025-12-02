@@ -17,12 +17,12 @@ export const Name = ( {handleStart, setUserName, setLastInitial} ) => {
                         maxLength={15}
                         minLength={2}
                         onChange={(e) => setUserName(e.target.value)}
-                        className="bg-yellow-100 rounded-2xl p-2 md:p-8 mt-4 md:mt-16 text-xl md:text-4xl w-5/5 border-8 border-amber-400 text-black"
+                        className="bg-yellow-100 rounded-2xl p-2 md:p-8 mt-4 md:mt-16 md:ml-16 text-xl md:text-4xl w-5/5 md:w-4/5 lg:w-5/5 border-8 border-amber-400 text-black"
                     />
                 </div>
 
                 <div className="flex flex-col">
-                    <div className='fit-content relative px-4 py-4'>
+                    <div className='fit-content relative px-4 py-4 md:py-0 lg:py-4'>
                         <label className="backdrop-blur-sm ml-8">Last name<br/> initial: </label>
                     </div>
                     <input
