@@ -3,7 +3,7 @@
 export const Question = ({data, chooseAnswer, questionIndex}) => {
 
     return (
-        < div className="overflow-y-scroll"> 
+        < div className="overflow-y-scroll md:overflow-y-auto"> 
             <div className='fit-content relative self-center py-4'>
                 <h1 className="text-xl md:text-3xl underline decoration-2 md:decoration-8 backdrop-blur-md"> {data[questionIndex].question}</h1>
             </div>
